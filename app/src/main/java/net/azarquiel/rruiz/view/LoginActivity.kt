@@ -33,13 +33,13 @@ class LoginActivity : AppCompatActivity() {
         } else {
             // No user is signed in
         }
-        loginbtnsignin.setOnClickListener { view ->
+        loginbtnsignin.setOnClickListener {
             signIn(loginetemail.text.toString(), loginetpass.text.toString())
         }
-        loginbtnregister.setOnClickListener { view ->
+        loginbtnregister.setOnClickListener {
             createAccount(loginetemail.text.toString(), loginetpass.text.toString())
         }
-        loginbtnlogout.setOnClickListener { view ->
+        loginbtnlogout.setOnClickListener {
             signOut()
             Toast.makeText(baseContext, "Sesion cerrada",
                 Toast.LENGTH_SHORT).show()
@@ -65,9 +65,14 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("user", user)
-                    startActivity(intent)
+                    user?.sendEmailVerification()
+                        ?.addOnCompleteListener {
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "Email sent.")
+                            }
+                        }
+                    Toast.makeText(baseContext, "Se le ha enviado un correo de autentificación",
+                        Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -83,8 +88,6 @@ class LoginActivity : AppCompatActivity() {
         if (!validateForm()) {
             return
         }
-
-
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -92,9 +95,17 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("user", user)
-                    startActivity(intent)
+                    if (user != null) {
+                        if(user.isEmailVerified){
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("user", user)
+                            startActivity(intent)
+                        }else{
+                            Toast.makeText(baseContext, "Debe verificar su cuenta, por medio del correo enviado",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
