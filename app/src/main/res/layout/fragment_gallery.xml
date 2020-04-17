@@ -12,24 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/galleryrv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fragmento de Galeria (Futuro Foro)"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/galleryiv"
-            android:layout_width="228dp"
-            android:layout_height="257dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_account"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

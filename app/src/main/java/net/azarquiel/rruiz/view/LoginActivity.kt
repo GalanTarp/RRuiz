@@ -35,8 +35,6 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("user", user)
             startActivity(intent)
-        } else {
-            // No user is signed in
         }
         loginbtnsignin.setOnClickListener {
             signIn(loginetemail.text.toString(), loginetpass.text.toString())
@@ -76,8 +74,8 @@ class LoginActivity : AppCompatActivity() {
                         .setDisplayName(nombre)
                         .build()
                     user?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
+                        ?.addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
                                 Log.d(TAG, "User profile updated.")
                             }
                         }

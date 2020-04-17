@@ -3,13 +3,18 @@ package net.azarquiel.rruiz.fragments
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import net.azarquiel.rruiz.R
+import net.azarquiel.rruiz.adapter.AdapterGallery
 
 
 /**
@@ -18,7 +23,12 @@ import net.azarquiel.rruiz.R
 class GalleryFragment : Fragment() {
 
     private lateinit var storage: FirebaseStorage
-    private var fotos: ArrayList<Bitmap> = ArrayList()
+    private var fotos: ArrayList<StorageReference> = ArrayList()
+    private lateinit var galleryrv: RecyclerView
+    private lateinit var adapter: AdapterGallery
+    companion object {
+        const val TAG = "gallery"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,11 +42,13 @@ class GalleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         storage = FirebaseStorage.getInstance()
+        adapter = AdapterGallery(activity!!.baseContext, R.layout.rowimage)
+        galleryrv = view.findViewById(R.id.galleryrv) as RecyclerView
 
         // Create a storage reference from our app
-        var storageRef = storage.reference
+        val storageRef = storage.reference
 
-        // Create a child reference
+       /* // Create a child reference
         // imagesRef now points to "images"
         var imagesRef = storageRef.child("images.jepg")
 
@@ -51,24 +63,35 @@ class GalleryFragment : Fragment() {
                 imageView.height, false))
         }.addOnFailureListener {
             // Handle any errors
-        }
-/*
-        if (imagesRef != null) {
-            imagesRef.listAll()
-                .addOnSuccessListener { listResult ->
-                    listResult.prefixes.forEach { prefix ->
-                        // All the prefixes under listRef.
-                        // You may call listAll() recursively on them.
-                    }
-
-                    listResult.items.forEach { item ->
-                        fotos.add(item)
-                    }
-                }
-                .addOnFailureListener {
-                    // Uh-oh, an error occurred!
-                }
         }*/
 
+
+        Log.d(TAG, "empiezo")
+        Log.d(TAG, storageRef.child("images.jepg").toString())
+        storageRef.listAll()
+            .addOnSuccessListener { listResult ->
+                listResult.prefixes.forEach {
+                    // All the prefixes under listRef.
+                    // You may call listAll() recursively on them.
+                }
+
+                listResult.items.forEach { item ->
+                    fotos.add(item)
+                    Log.d(TAG, item.toString())
+                }
+                adapter.setImages(fotos.toList())
+            }
+            .addOnFailureListener {
+                // Uh-oh, an error occurred!
+            }
+
+        initRV()
+
+
     }
+    private fun initRV() {
+        galleryrv.adapter = adapter
+        galleryrv.layoutManager = LinearLayoutManager(activity)
+    }
+
 }
