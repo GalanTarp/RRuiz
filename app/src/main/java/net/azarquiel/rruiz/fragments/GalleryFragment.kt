@@ -1,15 +1,16 @@
 package net.azarquiel.rruiz.fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-
 import net.azarquiel.rruiz.R
+
 
 /**
  * A simple [Fragment] subclass.
@@ -17,7 +18,7 @@ import net.azarquiel.rruiz.R
 class GalleryFragment : Fragment() {
 
     private lateinit var storage: FirebaseStorage
-
+    private var fotos: ArrayList<Bitmap> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +38,37 @@ class GalleryFragment : Fragment() {
 
         // Create a child reference
         // imagesRef now points to "images"
-        var imagesRef: StorageReference? = storageRef.child("images")
+        var imagesRef = storageRef.child("images.jepg")
 
+        // ImageView in your Activity
+        val imageView = view.findViewById<ImageView>(R.id.galleryiv)
+
+        // Download directly from StorageReference using Glide
+        // (See MyAppGlideModule for Loader registration)
+        storageRef.child("images.jepg").getBytes(Long.MAX_VALUE).addOnSuccessListener {
+            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, imageView.width,
+                imageView.height, false))
+        }.addOnFailureListener {
+            // Handle any errors
+        }
+/*
+        if (imagesRef != null) {
+            imagesRef.listAll()
+                .addOnSuccessListener { listResult ->
+                    listResult.prefixes.forEach { prefix ->
+                        // All the prefixes under listRef.
+                        // You may call listAll() recursively on them.
+                    }
+
+                    listResult.items.forEach { item ->
+                        fotos.add(item)
+                    }
+                }
+                .addOnFailureListener {
+                    // Uh-oh, an error occurred!
+                }
+        }*/
 
     }
 }

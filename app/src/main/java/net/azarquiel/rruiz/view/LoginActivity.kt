@@ -1,12 +1,16 @@
 package net.azarquiel.rruiz.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_login.*
 import net.azarquiel.rruiz.R
 
@@ -17,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var nombre : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,8 @@ class LoginActivity : AppCompatActivity() {
             signIn(loginetemail.text.toString(), loginetpass.text.toString())
         }
         loginbtnregister.setOnClickListener {
-            createAccount(loginetemail.text.toString(), loginetpass.text.toString())
+            showNameDialog()
+
         }
         loginbtnlogout.setOnClickListener {
             signOut()
@@ -65,6 +71,16 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(nombre)
+                        .build()
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "User profile updated.")
+                            }
+                        }
                     user?.sendEmailVerification()
                         ?.addOnCompleteListener {
                             if (task.isSuccessful) {
@@ -121,6 +137,24 @@ class LoginActivity : AppCompatActivity() {
         auth.signOut()
     }
 
+    private fun showNameDialog() {
+
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        builder.setTitle("Escribe tu nombre")
+        val dialogLayout = inflater.inflate(R.layout.alert_layout_name, null)
+        val editText  = dialogLayout.findViewById<EditText>(R.id.nameet)
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("OK") { _, _ ->
+            nombre = editText.text.toString()
+            Toast.makeText(applicationContext, "Tu nombre es " + editText.text.toString(), Toast.LENGTH_SHORT).show()
+            createAccount(loginetemail.text.toString(), loginetpass.text.toString())}
+        builder.show()
+
+    }
+
+
+
     private fun validateForm(): Boolean {
         var valid = true
 
@@ -143,3 +177,4 @@ class LoginActivity : AppCompatActivity() {
         return valid
     }
 }
+
