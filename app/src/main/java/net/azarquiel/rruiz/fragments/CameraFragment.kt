@@ -1,25 +1,28 @@
 package net.azarquiel.rruiz.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_camera.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import net.azarquiel.rruiz.R
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -32,14 +35,14 @@ class CameraFragment : Fragment() {
     companion object {
         const val REQUEST_PERMISSION = 200
         const val REQUEST_GALLERY = 1
-        const val REQUEST_CAMERA = 2
-        const val TAG = "ImgPicker"
+        const val TAG = "kk"
     }
 
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef : StorageReference
     private lateinit var imagesRef : StorageReference
     private var puedosubir = false
+    private lateinit var nombre :String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,16 +60,15 @@ class CameraFragment : Fragment() {
         val camerabtnsel: Button = view.findViewById(R.id.camerabtnsel)
         camerabtnsel.setOnClickListener { photoFromGallary() }
         val camerabtnup: Button = view.findViewById(R.id.camerabtnup)
-        camerabtnup.setOnClickListener { upphoto() }
+        camerabtnup.setOnClickListener {
+            Log.d(TAG,"kokokoko")
+            showNameDialog() }
 
         storage = FirebaseStorage.getInstance()
 
         // Create a storage reference from our app
         storageRef = storage.reference
 
-        // Create a child reference
-        // imagesRef now points to "images"
-        imagesRef = storageRef.child("images.jepg")
 
 
     }
@@ -77,7 +79,7 @@ class CameraFragment : Fragment() {
     }
 
     @Suppress("DEPRECATION")
-    public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
+    override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             data?.let {
@@ -89,7 +91,6 @@ class CameraFragment : Fragment() {
                                 activity!!.baseContext.contentResolver,
                                 contentURI
                             )
-                            //saveImage(bitmap)
                             cameraiv.setImageBitmap(bitmap)
 
                         } catch (e: IOException) {
@@ -105,6 +106,27 @@ class CameraFragment : Fragment() {
         }
     }
 
+    @SuppressLint("InflateParams")
+    private fun showNameDialog() {
+
+        val builder = AlertDialog.Builder(activity!!)
+        val inflater = layoutInflater
+        builder.setTitle("Escribe un nombre para la foto")
+        val dialogLayout = inflater.inflate(R.layout.alert_layout_galleryname, null)
+        val editText  = dialogLayout.findViewById<EditText>(R.id.alertgalleryname)
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            nombre = editText.text.toString()
+            Toast.makeText(
+                activity!!,
+                "El nombre es " + editText.text.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+            upphoto()
+        }
+        builder.show()
+    }
+
     @Suppress("DEPRECATION")
     private fun upphoto(){
         // Get the data from an ImageView as bytes
@@ -115,17 +137,30 @@ class CameraFragment : Fragment() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        var uploadTask = imagesRef.putBytes(data)
+
+        // Create a child reference
+        // imagesRef now points to "images"
+        imagesRef = storageRef.child("$nombre.jepg")
+
+
+        val uploadTask = imagesRef.putBytes(data)
         uploadTask.addOnProgressListener { taskSnapshot ->
             val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
             println("Upload is $progress% done")
         }.addOnPausedListener {
             println("Upload is paused")
         }.addOnFailureListener {
-            // Handle unsuccessful uploads
+            Toast.makeText(
+                activity!!.baseContext,
+                "La foto fallo",
+                Toast.LENGTH_SHORT
+            ).show()
         }.addOnSuccessListener {
-            // Handle successful uploads on complete
-            // ...
+            Toast.makeText(
+                activity!!.baseContext,
+                "La foto se subio con exito",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

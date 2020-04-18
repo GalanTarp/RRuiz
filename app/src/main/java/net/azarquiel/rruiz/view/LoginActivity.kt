@@ -1,5 +1,6 @@
 package net.azarquiel.rruiz.view
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -135,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signOut()
     }
 
+    @SuppressLint("InflateParams")
     private fun showNameDialog() {
 
         val builder = AlertDialog.Builder(this)
@@ -143,7 +145,7 @@ class LoginActivity : AppCompatActivity() {
         val dialogLayout = inflater.inflate(R.layout.alert_layout_name, null)
         val editText  = dialogLayout.findViewById<EditText>(R.id.nameet)
         builder.setView(dialogLayout)
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton("Aceptar") { _, _ ->
             nombre = editText.text.toString()
             Toast.makeText(applicationContext, "Tu nombre es " + editText.text.toString(), Toast.LENGTH_SHORT).show()
             createAccount(loginetemail.text.toString(), loginetpass.text.toString())}
