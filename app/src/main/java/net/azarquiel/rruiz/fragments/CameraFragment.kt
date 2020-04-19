@@ -140,7 +140,7 @@ class CameraFragment : Fragment() {
 
         // Create a child reference
         // imagesRef now points to "images"
-        imagesRef = storageRef.child("$nombre.jepg")
+        imagesRef = storageRef.child("$nombre.jpeg")
 
 
         val uploadTask = imagesRef.putBytes(data)

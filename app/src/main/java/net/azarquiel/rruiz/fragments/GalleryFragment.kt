@@ -27,6 +27,10 @@ class GalleryFragment : Fragment() {
     private lateinit var galleryrv: RecyclerView
     private lateinit var adapter: AdapterGallery
 
+    companion object{
+        const val TAG = "Login"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +75,7 @@ class GalleryFragment : Fragment() {
 
                 listResult.items.forEach { item ->
                     fotos.add(item)
+                    Log.d(TAG,item.toString())
                 }
                 adapter.setImages(fotos.toList())
             }
