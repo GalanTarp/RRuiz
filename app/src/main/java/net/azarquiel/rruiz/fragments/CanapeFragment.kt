@@ -56,7 +56,7 @@ class CanapeFragment : Fragment() {
         rvcanapes.adapter = adapter
         rvcanapes.layoutManager = LinearLayoutManager(activity)
     }
-
+/*
     private fun addData(){
         val canape = hashMapOf(
             "nombre" to "Los Angeles"
@@ -67,10 +67,10 @@ class CanapeFragment : Fragment() {
             .addOnSuccessListener { Log.d(MainActivity.TAG, "DocumentSnapshot successfully written!") }
             .addOnFailureListener { e -> Log.w(MainActivity.TAG, "Error writing document", e) }
 
-    }
+    }*/
 
     private fun setListener() {
-        val docRef = db.collection("cities")
+        val docRef = db.collection("canapes")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(MainActivity.TAG, "Listen failed.", e)
@@ -89,8 +89,10 @@ class CanapeFragment : Fragment() {
     private fun documentToList(documents: List<DocumentSnapshot>) {
         canapes.clear()
         documents.forEach { d ->
-            val first = d["nombre"] as String
-            canapes.add(Canape(nombre = first))
+            val nombre = d["nombre"] as String;
+            val desc = d["descripcion"] as String
+            val foto = d["foto"] as String
+            canapes.add(Canape(nombre = nombre, descripcion = desc, foto = foto))
         }
     }
 }

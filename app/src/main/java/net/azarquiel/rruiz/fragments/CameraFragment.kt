@@ -33,15 +33,12 @@ import java.io.IOException
 class CameraFragment : Fragment() {
 
     companion object {
-        const val REQUEST_PERMISSION = 200
         const val REQUEST_GALLERY = 1
-        const val TAG = "kk"
     }
 
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef : StorageReference
     private lateinit var imagesRef : StorageReference
-    private var puedosubir = false
     private lateinit var nombre :String
 
     override fun onCreateView(
@@ -55,13 +52,11 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkPermiss()
 
         val camerabtnsel: Button = view.findViewById(R.id.camerabtnsel)
-        camerabtnsel.setOnClickListener { photoFromGallary() }
+        camerabtnsel.setOnClickListener { photoFromGallery() }
         val camerabtnup: Button = view.findViewById(R.id.camerabtnup)
         camerabtnup.setOnClickListener {
-            Log.d(TAG,"kokokoko")
             showNameDialog() }
 
         storage = FirebaseStorage.getInstance()
@@ -73,7 +68,7 @@ class CameraFragment : Fragment() {
 
     }
 
-    private fun photoFromGallary() {
+    private fun photoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, REQUEST_GALLERY)
     }
@@ -164,28 +159,5 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun checkPermiss() {
-        if (    ContextCompat.checkSelfPermission(activity!!.baseContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            ||
-            ContextCompat.checkSelfPermission(activity!!.baseContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            ||
-            ContextCompat.checkSelfPermission(activity!!.baseContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(activity!!,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                REQUEST_PERMISSION
-            )
-        }
-    }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == REQUEST_PERMISSION && grantResults.isNotEmpty()) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(activity!!.baseContext, "Para subir fotos debes aceptar", Toast.LENGTH_SHORT).show()
-            }else{
-                puedosubir=true
-            }
-        }
-    }
 }

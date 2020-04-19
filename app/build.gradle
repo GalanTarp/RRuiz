@@ -63,6 +63,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
 
+    //Picasso
+    def picassoVersion = "2.71828"
+    implementation("com.squareup.picasso:picasso:$picassoVersion") {
+        exclude group: "com.android.support"
+    }
 
     implementation 'com.android.support:multidex:1.0.3'
 }

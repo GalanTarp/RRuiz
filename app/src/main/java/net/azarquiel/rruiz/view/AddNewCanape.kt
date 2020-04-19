@@ -1,10 +1,13 @@
 package net.azarquiel.rruiz.view
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -12,8 +15,13 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_add_new_canape.*
 import net.azarquiel.rruiz.R
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class AddNewCanape : AppCompatActivity() {
+
+    companion object {
+        const val REQUEST_GALLERY = 1
+    }
 
     private lateinit var db: FirebaseFirestore
     private lateinit var storageRef : StorageReference
@@ -28,11 +36,50 @@ class AddNewCanape : AppCompatActivity() {
 
 
         newcanapebtnfoto.setOnClickListener {
-
+            photoFromGallery()
         }
 
         newcanapebtnaceptar.setOnClickListener {
-            upphoto()
+            if(newcanapeednombre.text.toString() != "" && newcanapeeddesc.text.toString() != "" ){
+                upphoto()
+            }else{
+                Toast.makeText(this, "Nombre y Descripción son requeridos", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
+    }
+
+    private fun photoFromGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(galleryIntent, REQUEST_GALLERY)
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            data?.let {
+                when (requestCode) {
+                    REQUEST_GALLERY -> {
+                        val contentURI = data.data
+                        try {
+                            val bitmap = MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                contentURI
+                            )
+                            newcanapeiv.setImageBitmap(bitmap)
+
+                        } catch (e: IOException) {
+                            Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    else -> {
+                    }
+                }
+
+            }
         }
     }
 
@@ -82,7 +129,9 @@ class AddNewCanape : AppCompatActivity() {
         db.collection("canapes")
             .add(canape as Map<String, Any>)
             .addOnSuccessListener { Toast.makeText(this, "DocumentSnapshot successfully written!",
-                Toast.LENGTH_SHORT).show() }
+                Toast.LENGTH_SHORT).show()
+                super.onBackPressed()
+            }
             .addOnFailureListener {Toast.makeText(this, "Error writing document",
                 Toast.LENGTH_SHORT).show() }
 

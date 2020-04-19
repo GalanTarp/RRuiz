@@ -1,8 +1,10 @@
 package net.azarquiel.rruiz.view
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,14 +12,20 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_login.*
 import net.azarquiel.rruiz.R
+import net.azarquiel.rruiz.fragments.CameraFragment
 
 class LoginActivity : AppCompatActivity() {
 
     companion object{
+        const val REQUEST_PERMISSION = 200
+        const val REQUEST_GALLERY = 1
+
         const val TAG = "Login"
     }
 
@@ -29,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+
+        checkPermiss()
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -175,6 +185,30 @@ class LoginActivity : AppCompatActivity() {
         }
 
         return valid
+    }
+
+    private fun checkPermiss() {
+        if (    ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+                REQUEST_PERMISSION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_PERMISSION && grantResults.isNotEmpty()) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Para utilizar la APP debes aceptar", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
     }
 }
 

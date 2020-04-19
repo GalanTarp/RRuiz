@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.rowcanape.view.*
 import net.azarquiel.rruiz.model.Canape
 
@@ -40,6 +41,9 @@ class CustomAdapter(
         fun bind(dataItem: Canape){
             // itemview es el item de diseño
             // al que hay que poner los datos del objeto dataItem
+
+            Picasso.get().load(dataItem.foto).into(itemView.rowivcanape)
+
             itemView.rowtvnombre.text = dataItem.nombre
 
             itemView.tag = dataItem
