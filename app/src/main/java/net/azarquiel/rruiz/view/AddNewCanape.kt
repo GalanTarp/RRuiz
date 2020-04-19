@@ -73,7 +73,6 @@ class AddNewCanape : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     private fun addData(foto : Uri){
-
         val canape = hashMapOf(
             "nombre" to newcanapeednombre.text.toString(),
             "descripcion" to newcanapeeddesc.text.toString(),
