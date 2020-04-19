@@ -2,10 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+
+    dataBinding {
+        enabled = true
+    }
 
     defaultConfig {
         applicationId "net.azarquiel.rruiz"
@@ -68,6 +73,8 @@ dependencies {
     implementation("com.squareup.picasso:picasso:$picassoVersion") {
         exclude group: "com.android.support"
     }
+
+
 
     implementation 'com.android.support:multidex:1.0.3'
 }

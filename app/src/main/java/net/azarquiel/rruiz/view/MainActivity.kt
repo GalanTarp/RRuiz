@@ -1,8 +1,10 @@
 package net.azarquiel.rruiz.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,6 +20,7 @@ import net.azarquiel.rruiz.R
 import net.azarquiel.rruiz.fragments.CameraFragment
 import net.azarquiel.rruiz.fragments.CanapeFragment
 import net.azarquiel.rruiz.fragments.GalleryFragment
+import net.azarquiel.rruiz.model.Canape
 
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -115,6 +118,13 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame, fragment)
         fragmentTransaction.commit()
+    }
+
+    fun onClickCanape(v: View){
+        val canapepulsado = v.tag as Canape
+        val intent = Intent(this, DetailCanape::class.java)
+        intent.putExtra("canape", canapepulsado)
+        startActivity(intent)
     }
 
 }
