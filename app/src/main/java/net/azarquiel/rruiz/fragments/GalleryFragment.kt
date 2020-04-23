@@ -43,11 +43,11 @@ class GalleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         storage = FirebaseStorage.getInstance()
-        adapter = AdapterGallery(activity!!.baseContext, R.layout.rowimage)
+        adapter = AdapterGallery(requireActivity().baseContext, R.layout.rowimage)
         galleryrv = view.findViewById(R.id.galleryrv) as RecyclerView
 
         // Create a storage reference from our app
-        val storageRef = storage.reference
+        val storageRef = storage.reference.child("foro")
 
        /* // Create a child reference
         // imagesRef now points to "images"

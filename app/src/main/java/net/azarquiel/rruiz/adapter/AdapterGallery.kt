@@ -46,7 +46,7 @@ class AdapterGallery(
         fun bind(dataItem: StorageReference){
             // itemview es el item de diseño
             // al que hay que poner los datos del objeto dataItem
-            Log.d(TAG,dataItem.toString())
+            Log.d(TAG, dataItem.path)
             dataItem.getBytes(Long.MAX_VALUE).addOnSuccessListener {
                 val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
                 itemView.rowivgallery.setImageBitmap(
@@ -55,6 +55,7 @@ class AdapterGallery(
             }.addOnFailureListener {
                 // Handle any errors
             }
+            itemView.rowgallerytv.text = dataItem.name
             itemView.tag = dataItem
         }
 

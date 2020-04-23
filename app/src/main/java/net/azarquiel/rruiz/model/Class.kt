@@ -9,3 +9,5 @@ import java.io.Serializable
 
 data class Canape(var nombre:String="", var foto:String="", var descripcion : String =""):Serializable
 
+data class Image(var nombre: String="", var foto: String="", var path: String=""):Serializable
+

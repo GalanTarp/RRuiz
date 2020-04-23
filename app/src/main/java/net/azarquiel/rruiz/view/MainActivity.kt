@@ -1,10 +1,12 @@
 package net.azarquiel.rruiz.view
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
@@ -21,6 +24,7 @@ import net.azarquiel.rruiz.fragments.CameraFragment
 import net.azarquiel.rruiz.fragments.CanapeFragment
 import net.azarquiel.rruiz.fragments.GalleryFragment
 import net.azarquiel.rruiz.model.Canape
+import net.azarquiel.rruiz.model.Image
 
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +34,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
     private lateinit var user: FirebaseUser
     private lateinit var auth: FirebaseAuth
+    private var nfragment: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,12 +84,15 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         when (item.itemId) {
             R.id.nav_camera -> {
                 fragment = CameraFragment()
+                nfragment = 0
             }
             R.id.nav_gallery -> {
                 fragment = GalleryFragment()
+                nfragment = 1
             }
             R.id.nav_canapes -> {
                 fragment = CanapeFragment()
+                nfragment = 2
             }
         }
         replaceFragment(fragment!!)
@@ -109,6 +117,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             CanapeFragment()
         )
         fragmentTransaction.commit()
+        nfragment = 2
     }
 
     // Cambiamos de fragmento
@@ -120,11 +129,30 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         fragmentTransaction.commit()
     }
 
+
+    fun onClickImage(v: View){
+        val storageref = v.tag as StorageReference
+        storageref.downloadUrl.addOnSuccessListener {
+            val imagepulsado = Image(
+                foto = it.toString(),
+                nombre = storageref.name,
+                path = storageref.path
+            )
+            val intent = Intent(this, DetailGallery::class.java)
+            intent.putExtra("image", imagepulsado)
+            startActivity(intent)
+        }.addOnFailureListener {
+            Toast.makeText(this, "Download Uri Failled",
+                Toast.LENGTH_SHORT).show()
+        }
+
+    }
     fun onClickCanape(v: View){
         val canapepulsado = v.tag as Canape
         val intent = Intent(this, DetailCanape::class.java)
         intent.putExtra("canape", canapepulsado)
         startActivity(intent)
     }
+
 
 }

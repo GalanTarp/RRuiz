@@ -42,12 +42,12 @@ class CanapeFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         rvcanape = view.findViewById(R.id.rvcanapes) as RecyclerView
-        adapter = CustomAdapter(activity!!.baseContext, R.layout.rowcanape)
+        adapter = CustomAdapter(requireActivity().baseContext, R.layout.rowcanape)
         initRV()
         setListener()
 
         val fab: FloatingActionButton = view.findViewById(R.id.fabaddcanape)
-        fab.setOnClickListener {  val intent = Intent(activity!!.baseContext, AddNewCanape::class.java)
+        fab.setOnClickListener {  val intent = Intent(requireActivity().baseContext, AddNewCanape::class.java)
             startActivity(intent) }
     }
 
@@ -89,7 +89,7 @@ class CanapeFragment : Fragment() {
     private fun documentToList(documents: List<DocumentSnapshot>) {
         canapes.clear()
         documents.forEach { d ->
-            val nombre = d["nombre"] as String;
+            val nombre = d["nombre"] as String
             val desc = d["descripcion"] as String
             val foto = d["foto"] as String
             canapes.add(Canape(nombre = nombre, descripcion = desc, foto = foto))

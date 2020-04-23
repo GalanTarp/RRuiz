@@ -16,17 +16,18 @@
             android:layout_width="248dp"
             android:layout_height="259dp"
             android:layout_marginTop="50dp"
-            android:src="@android:drawable/sym_def_app_icon"
+            android:src="@drawable/logorruiz"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/cameraimage" />
 
         <Button
             android:id="@+id/camerabtnup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="SUBIR FOTO"
+            android:text="@string/subir_foto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.75"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +38,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="SELECCIONAR FOTO"
+            android:text="@string/seleccionar_foto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cameraiv" />
+
+        <Button
+            android:id="@+id/camerabtnrotate"
+            android:layout_width="87dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="48dp"
+            android:background="@android:drawable/ic_menu_rotate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/camerabtnsel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

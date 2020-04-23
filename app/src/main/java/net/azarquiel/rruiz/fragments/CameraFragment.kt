@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,12 +18,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import net.azarquiel.rruiz.R
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -56,9 +60,13 @@ class CameraFragment : Fragment() {
         val camerabtnsel: Button = view.findViewById(R.id.camerabtnsel)
         camerabtnsel.setOnClickListener { photoFromGallery() }
         val camerabtnup: Button = view.findViewById(R.id.camerabtnup)
-        camerabtnup.setOnClickListener {
-            showNameDialog() }
-
+        camerabtnup.setOnClickListener { showNameDialog() }
+        val camerabtnrotate: Button = view.findViewById(R.id.camerabtnrotate)
+        camerabtnrotate.setOnClickListener {
+            val aux = cameraiv.drawable.toBitmap()
+            val matrix = Matrix()
+            matrix.postRotate(90F)
+            cameraiv.setImageBitmap(Bitmap.createBitmap(aux, 0,0,aux.width,aux.height, matrix,true)) }
         storage = FirebaseStorage.getInstance()
 
         // Create a storage reference from our app
@@ -83,13 +91,13 @@ class CameraFragment : Fragment() {
                         val contentURI = data.data
                         try {
                             val bitmap = MediaStore.Images.Media.getBitmap(
-                                activity!!.baseContext.contentResolver,
+                                requireActivity().baseContext.contentResolver,
                                 contentURI
                             )
                             cameraiv.setImageBitmap(bitmap)
 
                         } catch (e: IOException) {
-                            Toast.makeText(activity!!.baseContext, "Failed!", Toast.LENGTH_SHORT)
+                            Toast.makeText(requireActivity().baseContext, "Failed!", Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -104,7 +112,7 @@ class CameraFragment : Fragment() {
     @SuppressLint("InflateParams")
     private fun showNameDialog() {
 
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireActivity())
         val inflater = layoutInflater
         builder.setTitle("Escribe un nombre para la foto")
         val dialogLayout = inflater.inflate(R.layout.alert_layout_galleryname, null)
@@ -113,7 +121,7 @@ class CameraFragment : Fragment() {
         builder.setPositiveButton("Aceptar") { _, _ ->
             nombre = editText.text.toString()
             Toast.makeText(
-                activity!!,
+                requireActivity(),
                 "El nombre es " + editText.text.toString(),
                 Toast.LENGTH_SHORT
             ).show()
@@ -135,7 +143,7 @@ class CameraFragment : Fragment() {
 
         // Create a child reference
         // imagesRef now points to "images"
-        imagesRef = storageRef.child("$nombre.jpeg")
+        imagesRef = storageRef.child("foro/$nombre.jpeg")
 
 
         val uploadTask = imagesRef.putBytes(data)
@@ -146,13 +154,13 @@ class CameraFragment : Fragment() {
             println("Upload is paused")
         }.addOnFailureListener {
             Toast.makeText(
-                activity!!.baseContext,
+                requireActivity().baseContext,
                 "La foto fallo",
                 Toast.LENGTH_SHORT
             ).show()
         }.addOnSuccessListener {
             Toast.makeText(
-                activity!!.baseContext,
+                requireActivity().baseContext,
                 "La foto se subio con exito",
                 Toast.LENGTH_SHORT
             ).show()

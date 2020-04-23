@@ -38,4 +38,10 @@
     <string name="Canape">Canape</string>
     <string name="ImageStorage">ImageStorage</string>
     <string name="nombre">Nombre</string>
+    <string name="imagedetail">ImageDetail</string>
+    <string name="cameraimage">CameraImage</string>
+    <string name="subir_foto">SUBIR FOTO</string>
+    <string name="seleccionar_foto">SELECCIONAR FOTO</string>
+    <string name="descripci_n">Descripción</string>
+    <string name="canapeimage">CanapeImage</string>
 </resources>
