@@ -1,5 +1,6 @@
 package net.azarquiel.rruiz.view
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -31,11 +32,30 @@ class DetailGallery : AppCompatActivity() {
         reference = FirebaseStorage.getInstance().reference.child(image.path)
 //        mScaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
 
+        gallerydetailbtn.setOnClickListener {
+            openWebPage()
+        }
     }
     private fun pintar() {
         Picasso.get().load(image.foto).into(gallerydetailiv)
         gallerydetailtv.text = image.nombre
     }
+
+    private fun openWebPage() {
+        reference.downloadUrl.addOnSuccessListener {
+            Toast.makeText(this, "Download Uri Correctly",
+                Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_VIEW, it)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Download Uri Failled",
+                Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 
     /*override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
         mScaleGestureDetector?.onTouchEvent(motionEvent)

@@ -44,4 +44,5 @@
     <string name="seleccionar_foto">SELECCIONAR FOTO</string>
     <string name="descripci_n">Descripción</string>
     <string name="canapeimage">CanapeImage</string>
+    <string name="detalle">DETALLE</string>
 </resources>
