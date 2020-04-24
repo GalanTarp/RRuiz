@@ -23,6 +23,7 @@ import net.azarquiel.rruiz.R
 import net.azarquiel.rruiz.fragments.CameraFragment
 import net.azarquiel.rruiz.fragments.CanapeFragment
 import net.azarquiel.rruiz.fragments.GalleryFragment
+import net.azarquiel.rruiz.fragments.PedidosFragment
 import net.azarquiel.rruiz.model.Canape
 import net.azarquiel.rruiz.model.Image
 
@@ -93,6 +94,10 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             R.id.nav_canapes -> {
                 fragment = CanapeFragment()
                 nfragment = 2
+            }
+            R.id.nav_pedidos -> {
+                fragment = PedidosFragment()
+                nfragment = 3
             }
         }
         replaceFragment(fragment!!)

@@ -13,8 +13,12 @@
         android:title="Galeria" />
     <item
         android:id="@+id/nav_canapes"
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_list"
         android:title="Lista Canapes" />
+    <item
+        android:id="@+id/nav_pedidos"
+        android:icon="@drawable/ic_pedido"
+        android:title="Pedidos" />
 
 
 </menu>

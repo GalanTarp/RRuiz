@@ -1,15 +1,29 @@
 package net.azarquiel.rruiz.fragments
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 import net.azarquiel.rruiz.R
 import net.azarquiel.rruiz.adapter.AdapterPedidos
+import net.azarquiel.rruiz.model.Pedido
+import net.azarquiel.rruiz.view.AddNewPedido
+import net.azarquiel.rruiz.view.MainActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -19,7 +33,7 @@ class PedidosFragment : Fragment() {
     private lateinit var adapter: AdapterPedidos
     private lateinit var rvpedidos: RecyclerView
     private lateinit var db: FirebaseFirestore
-    private var pedidos: ArrayList<Pedidos> = ArrayList()
+    private var pedidos: ArrayList<Pedido> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,20 +49,23 @@ class PedidosFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
-        rvcanape = view.findViewById(R.id.rvcanapes) as RecyclerView
-        adapter = CustomAdapter(requireActivity().baseContext, R.layout.rowcanape)
+        rvpedidos = view.findViewById(R.id.rvpedidos) as RecyclerView
+        adapter = AdapterPedidos(requireActivity().baseContext, R.layout.rowcanape)
         initRV()
         setListener()
 
-        val fab: FloatingActionButton = view.findViewById(R.id.fabaddcanape)
-        fab.setOnClickListener {  val intent = Intent(requireActivity().baseContext, AddNewCanape::class.java)
-            startActivity(intent) }
+        val fab: FloatingActionButton = view.findViewById(R.id.fabaddpedido)
+        fab.setOnClickListener {
+            pickDateTime()
+            val intent = Intent(requireActivity().baseContext, AddNewPedido::class.java)
+            startActivity(intent)
+        }
     }
 
 
     private fun initRV() {
-        rvcanapes.adapter = adapter
-        rvcanapes.layoutManager = LinearLayoutManager(activity)
+        rvpedidos.adapter = adapter
+        rvpedidos.layoutManager = LinearLayoutManager(activity)
     }
 /*
     private fun addData(){
@@ -64,7 +81,7 @@ class PedidosFragment : Fragment() {
     }*/
 
     private fun setListener() {
-        val docRef = db.collection("canapes")
+        val docRef = db.collection("pedidos")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(MainActivity.TAG, "Listen failed.", e)
@@ -73,7 +90,7 @@ class PedidosFragment : Fragment() {
 
             if (snapshot != null && !snapshot.isEmpty) {
                 documentToList(snapshot.documents)
-                adapter.setCanapes(canapes)
+                adapter.setPedidos(pedidos)
             } else {
                 Log.d(MainActivity.TAG, "Current data: null")
             }
@@ -81,13 +98,37 @@ class PedidosFragment : Fragment() {
     }
 
     private fun documentToList(documents: List<DocumentSnapshot>) {
-        canapes.clear()
+        pedidos.clear()
         documents.forEach { d ->
             val nombre = d["nombre"] as String
-            val desc = d["descripcion"] as String
-            val foto = d["foto"] as String
-            canapes.add(Canape(nombre = nombre, descripcion = desc, foto = foto))
+            val tlf = d["tlf"] as Long
+            val diahora = d["diahora"] as Timestamp
+            val domicilio = d["domicilio"] as Boolean
+            val calle = d["calle"] as String
+            pedidos.add(Pedido(nombre = nombre, tlf = tlf, diahora = diahora, domicilio = domicilio,
+                calle = calle))
         }
     }
 
+    @Suppress("DEPRECATION")
+    private fun pickDateTime() {
+        val currentDateTime = Calendar.getInstance()
+        val startYear = currentDateTime.get(Calendar.YEAR)
+        val startMonth = currentDateTime.get(Calendar.MONTH)
+        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = currentDateTime.get(Calendar.MINUTE)
+
+        DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                val pickedDateTime = Calendar.getInstance()
+                pickedDateTime.set(year, month, day, hour, minute)
+                val aux = Date(year, month, day, hour, minute)
+                Toast.makeText(requireActivity().baseContext, aux.toString(), Toast.LENGTH_LONG)
+                    .show()
+                val aux2 =Timestamp(aux)
+
+            }, startHour, startMinute, true).show()
+        }, startYear, startMonth, startDay).show()
+    }
 }
