@@ -54,10 +54,13 @@
 
         <TextView
             android:id="@+id/detailcanapetvdesc"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="16dp"
             android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginBottom="2dp"
             android:justificationMode="inter_word"
             android:maxLines="10"
             android:text="@{canape.descripcion}"

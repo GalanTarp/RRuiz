@@ -56,7 +56,6 @@ class PedidosFragment : Fragment() {
 
         val fab: FloatingActionButton = view.findViewById(R.id.fabaddpedido)
         fab.setOnClickListener {
-            pickDateTime()
             val intent = Intent(requireActivity().baseContext, AddNewPedido::class.java)
             startActivity(intent)
         }
@@ -101,34 +100,16 @@ class PedidosFragment : Fragment() {
         pedidos.clear()
         documents.forEach { d ->
             val nombre = d["nombre"] as String
-            val tlf = d["tlf"] as Long
+            val tlf = d["tlf"] as String
             val diahora = d["diahora"] as Timestamp
             val domicilio = d["domicilio"] as Boolean
             val calle = d["calle"] as String
+            val productosnombres = d["productosnombres"] as ArrayList<String>
+            val productoscantidades = d["productoscantidades"] as ArrayList<Int>
             pedidos.add(Pedido(nombre = nombre, tlf = tlf, diahora = diahora, domicilio = domicilio,
-                calle = calle))
+                calle = calle, productosnombres = productosnombres,
+                productoscantidades = productoscantidades))
         }
     }
 
-    @Suppress("DEPRECATION")
-    private fun pickDateTime() {
-        val currentDateTime = Calendar.getInstance()
-        val startYear = currentDateTime.get(Calendar.YEAR)
-        val startMonth = currentDateTime.get(Calendar.MONTH)
-        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
-        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
-        val startMinute = currentDateTime.get(Calendar.MINUTE)
-
-        DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                val pickedDateTime = Calendar.getInstance()
-                pickedDateTime.set(year, month, day, hour, minute)
-                val aux = Date(year, month, day, hour, minute)
-                Toast.makeText(requireActivity().baseContext, aux.toString(), Toast.LENGTH_LONG)
-                    .show()
-                val aux2 =Timestamp(aux)
-
-            }, startHour, startMinute, true).show()
-        }, startYear, startMonth, startDay).show()
-    }
 }
