@@ -26,6 +26,7 @@ import net.azarquiel.rruiz.fragments.GalleryFragment
 import net.azarquiel.rruiz.fragments.PedidosFragment
 import net.azarquiel.rruiz.model.Canape
 import net.azarquiel.rruiz.model.Image
+import net.azarquiel.rruiz.model.Pedido
 
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -152,10 +153,18 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }
 
     }
+
     fun onClickCanape(v: View){
         val canapepulsado = v.tag as Canape
         val intent = Intent(this, DetailCanape::class.java)
         intent.putExtra("canape", canapepulsado)
+        startActivity(intent)
+    }
+
+    fun onClickPedido(v: View){
+        val pedidopulsado = v.tag as Pedido
+        val intent = Intent(this, DetailPedido::class.java)
+        intent.putExtra("pedido", pedidopulsado)
         startActivity(intent)
     }
 

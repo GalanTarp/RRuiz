@@ -45,4 +45,9 @@
     <string name="descripci_n">Descripción</string>
     <string name="canapeimage">CanapeImage</string>
     <string name="detalle">DETALLE</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="registrarse">REGISTRARSE</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="cerrar_sesi_n">CERRAR SESIÓN</string>
+    <string name="domicilio">Domicilio</string>
 </resources>

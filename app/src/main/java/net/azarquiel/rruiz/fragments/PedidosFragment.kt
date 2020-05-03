@@ -50,7 +50,7 @@ class PedidosFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         rvpedidos = view.findViewById(R.id.rvpedidos) as RecyclerView
-        adapter = AdapterPedidos(requireActivity().baseContext, R.layout.rowcanape)
+        adapter = AdapterPedidos(requireActivity().baseContext, R.layout.rowpedido)
         initRV()
         setListener()
 
@@ -66,18 +66,6 @@ class PedidosFragment : Fragment() {
         rvpedidos.adapter = adapter
         rvpedidos.layoutManager = LinearLayoutManager(activity)
     }
-/*
-    private fun addData(){
-        val canape = hashMapOf(
-            "nombre" to "Los Angeles"
-        )
-
-        db.collection("cities")
-            .add(canape as Map<String, Any>)
-            .addOnSuccessListener { Log.d(MainActivity.TAG, "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w(MainActivity.TAG, "Error writing document", e) }
-
-    }*/
 
     private fun setListener() {
         val docRef = db.collection("pedidos")
@@ -89,13 +77,14 @@ class PedidosFragment : Fragment() {
 
             if (snapshot != null && !snapshot.isEmpty) {
                 documentToList(snapshot.documents)
-                adapter.setPedidos(pedidos)
+
             } else {
                 Log.d(MainActivity.TAG, "Current data: null")
             }
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun documentToList(documents: List<DocumentSnapshot>) {
         pedidos.clear()
         documents.forEach { d ->
@@ -105,11 +94,14 @@ class PedidosFragment : Fragment() {
             val domicilio = d["domicilio"] as Boolean
             val calle = d["calle"] as String
             val productosnombres = d["productosnombres"] as ArrayList<String>
-            val productoscantidades = d["productoscantidades"] as ArrayList<Int>
-            pedidos.add(Pedido(nombre = nombre, tlf = tlf, diahora = diahora, domicilio = domicilio,
+            val productoscantidades = d["productoscantidades"] as ArrayList<Long>
+            pedidos.add(Pedido(nombre = nombre, tlf = tlf, diahora = diahora.toDate(), domicilio = domicilio,
                 calle = calle, productosnombres = productosnombres,
                 productoscantidades = productoscantidades))
         }
+        pedidos.sortWith(compareBy<Pedido> { it.diahora.year }.thenBy { it.diahora.month }.thenBy { it.diahora.date }.thenBy
+            { it.diahora.hours }.thenBy { it.diahora.minutes })
+        adapter.setPedidos(pedidos)
     }
 
 }

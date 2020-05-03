@@ -28,8 +28,6 @@ class AddNewPedido : AppCompatActivity() {
     private var canapes = ArrayList<String>()
     private var productosNombresSeleccionados = ArrayList<String>()
     private var productosCantidadSeleccionados = ArrayList<Int>()
-    private var cont = 0
-    private var result = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,21 +97,38 @@ class AddNewPedido : AppCompatActivity() {
         //{dialog, option}
         { _, option ->
             when (option) {
-                0 -> showmultichoiceDialog()
-                1 -> showmultichoiceDialog()
+                0 -> showcantidadDialog()
+                1 -> showmultichoiceDialog(0)
             }
         }
         selectDialog.show()
     }
 
-    private fun showmultichoiceDialog() {
+    private fun showcantidadDialog() {
+        val selectDialog = AlertDialog.Builder(this)
+        selectDialog.setTitle("Selecciona cantidad")
+        val selectDialogItems = arrayOf("SUELTOS", "MEDIA BANDEJA", "BANDEJA ENTERA")
+        selectDialog.setItems(selectDialogItems
+        )
+        //{dialog, option}
+        { _, option ->
+            when (option) {
+                0 -> showmultichoiceDialog(0)
+                1 -> showmultichoiceDialog(10)
+                2 -> showmultichoiceDialog(20)
+            }
+        }
+        selectDialog.show()
+    }
+
+    private fun showmultichoiceDialog(n :Int) {
         // Late initialize an alert dialog object
         lateinit var dialog:AlertDialog
 
         val selectedItems = ArrayList<Int>() // Where we track the selected items
 
         // Initialize an array of canapes
-        var arrayCanapes = arrayOfNulls<String>(canapes.size)
+        val arrayCanapes = arrayOfNulls<String>(canapes.size)
         for (i in 0 until canapes.size){
             arrayCanapes[i]=(canapes[i])
         }
@@ -149,9 +164,9 @@ class AddNewPedido : AppCompatActivity() {
                         }
                     }
                     if(!bandera){
-                        anadirProducto(it)
+                        anadirProducto(it, n)
                         productosNombresSeleccionados.add(it)
-                        productosCantidadSeleccionados.add(0)
+                        productosCantidadSeleccionados.add(n)
                     }
                 }
             }
@@ -167,19 +182,16 @@ class AddNewPedido : AppCompatActivity() {
 
 
 
-    private fun anadirProducto(nombre : String){
+    private fun anadirProducto(nombre : String, n : Int){
 
-        var id = cont
 
         val lh = LinearLayout (this)
-        lh.id = id
         val param : LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         param.weight = 1F
         lh.orientation = LinearLayout.HORIZONTAL
 
         val cantidad = TextView(this)
-        cantidad.id = (id)
-        cantidad.text = "0"
+        cantidad.text = n.toString()
 
         val btnmenos = Button(this)
         btnmenos.text = "-"
@@ -215,7 +227,6 @@ class AddNewPedido : AppCompatActivity() {
         producto.text = nombre
         lh.addView(producto)
         lh.layoutParams = param
-        cont++
         newpedidolinear.addView(lh)
     }
 
@@ -268,6 +279,12 @@ class AddNewPedido : AppCompatActivity() {
 
 
     private fun subirPedido(){
+        var bandera = false
+        for (n in productosCantidadSeleccionados){
+            if (n==0){
+                bandera=true
+            }
+        }
         if(newpedidoednombre.text.toString() == ""){
             Toast.makeText(this, "Falta nombre",
                 Toast.LENGTH_SHORT).show()
@@ -282,6 +299,9 @@ class AddNewPedido : AppCompatActivity() {
                 Toast.LENGTH_SHORT).show()
         }else if(productosNombresSeleccionados.size == 0){
             Toast.makeText(this, "Faltan productos",
+                Toast.LENGTH_SHORT).show()
+        }else if(bandera){
+            Toast.makeText(this, "Hay producto/s con 0 canapes",
                 Toast.LENGTH_SHORT).show()
         }else{
            addData()
