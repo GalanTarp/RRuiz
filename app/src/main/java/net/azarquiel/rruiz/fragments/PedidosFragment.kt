@@ -57,7 +57,7 @@ class PedidosFragment : Fragment() {
         val fab: FloatingActionButton = view.findViewById(R.id.fabaddpedido)
         fab.setOnClickListener {
             val intent = Intent(requireActivity().baseContext, AddNewPedido::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 

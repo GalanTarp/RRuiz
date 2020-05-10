@@ -123,7 +123,8 @@ class AddNewCanape : AppCompatActivity() {
         val canape = hashMapOf(
             "nombre" to newcanapeednombre.text.toString(),
             "descripcion" to newcanapeeddesc.text.toString(),
-            "foto" to foto.toString()
+            "foto" to foto.toString(),
+            "precio" to newcanapeedprecio.text.toString()
         )
 
         db.collection("canapes")

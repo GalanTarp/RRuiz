@@ -92,7 +92,8 @@ class CanapeFragment : Fragment() {
             val nombre = d["nombre"] as String
             val desc = d["descripcion"] as String
             val foto = d["foto"] as String
-            canapes.add(Canape(nombre = nombre, descripcion = desc, foto = foto))
+            val precio =d["precio"] as String
+            canapes.add(Canape(nombre = nombre, descripcion = desc, foto = foto, precio = precio))
         }
     }
 }

@@ -50,4 +50,7 @@
     <string name="contrase_a">Contraseña</string>
     <string name="cerrar_sesi_n">CERRAR SESIÓN</string>
     <string name="domicilio">Domicilio</string>
+    <string name="precio">Precio</string>
+    <string name="aceptar">ACEPTAR</string>
+    <string name="title_activity_detail_pedido2">DetailPedido2</string>
 </resources>

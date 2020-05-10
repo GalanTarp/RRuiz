@@ -1,14 +1,12 @@
 package net.azarquiel.rruiz.view
 
-import android.annotation.SuppressLint
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
 import kotlinx.android.synthetic.main.activity_detail_pedido.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import net.azarquiel.rruiz.R
 import net.azarquiel.rruiz.model.Pedido
 

@@ -1,6 +1,7 @@
 package net.azarquiel.rruiz.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_new_pedido.*
 import net.azarquiel.rruiz.R
+import net.azarquiel.rruiz.model.Canape
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -25,9 +27,10 @@ import kotlin.properties.Delegates
 class AddNewPedido : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
-    private var canapes = ArrayList<String>()
+    private var canapes = ArrayList<Canape>()
     private var productosNombresSeleccionados = ArrayList<String>()
     private var productosCantidadSeleccionados = ArrayList<Int>()
+    private var productosPrecioSeleccionados = ArrayList<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,15 @@ class AddNewPedido : AppCompatActivity() {
         newpedidobtnaceptar.setOnClickListener {
             subirPedido()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun actualizartotal(){
+        var total = 0.0
+        for(i in productosCantidadSeleccionados.indices){
+            total += productosCantidadSeleccionados[i] * productosPrecioSeleccionados[i]
+        }
+        newpedidotvtotal.text = "Total: ${"%.2f".format(total)} €"
     }
 
 
@@ -130,7 +142,7 @@ class AddNewPedido : AppCompatActivity() {
         // Initialize an array of canapes
         val arrayCanapes = arrayOfNulls<String>(canapes.size)
         for (i in 0 until canapes.size){
-            arrayCanapes[i]=(canapes[i])
+            arrayCanapes[i]=(canapes[i].nombre)
         }
 
         // Initialize a new instance of alert dialog builder object
@@ -167,7 +179,10 @@ class AddNewPedido : AppCompatActivity() {
                         anadirProducto(it, n)
                         productosNombresSeleccionados.add(it)
                         productosCantidadSeleccionados.add(n)
+                        productosPrecioSeleccionados.add(canapes[int].precio.toDouble())
                     }
+
+                    actualizartotal()
                 }
             }
         }
@@ -203,6 +218,8 @@ class AddNewPedido : AppCompatActivity() {
                     }else{
                         productosCantidadSeleccionados[prod] = productosCantidadSeleccionados[prod]-1
                         cantidad.text = productosCantidadSeleccionados[prod].toString()
+
+                        actualizartotal()
                     }
                 }
             }
@@ -218,6 +235,8 @@ class AddNewPedido : AppCompatActivity() {
                 if(nombre == productosNombresSeleccionados[prod]){
                     productosCantidadSeleccionados[prod] = productosCantidadSeleccionados[prod]+1
                     cantidad.text = productosCantidadSeleccionados[prod].toString()
+
+                    actualizartotal()
                 }
             }
         }
@@ -248,6 +267,9 @@ class AddNewPedido : AppCompatActivity() {
             if(bandera){
                 productosNombresSeleccionados.removeAt(aux)
                 productosCantidadSeleccionados.removeAt(aux)
+                productosPrecioSeleccionados.removeAt(aux)
+
+                actualizartotal()
             }
         }
         builder.show()
@@ -270,10 +292,11 @@ class AddNewPedido : AppCompatActivity() {
 
     private fun documentToList(documents: List<DocumentSnapshot>) {
         canapes.clear()
-        canapes.add("Variado")
+        canapes.add(Canape(nombre = "Variado", precio = "0.8"))
         documents.forEach { d ->
             val nombre = d["nombre"] as String
-            canapes.add(nombre)
+            val precio = d["precio"] as String
+            canapes.add(Canape(nombre = nombre, precio = precio))
         }
     }
 
@@ -317,14 +340,17 @@ class AddNewPedido : AppCompatActivity() {
             "domicilio" to newpedidocbdomicilio.isChecked,
             "calle" to newpedidoeddomicilio.text.toString(),
             "productosnombres" to productosNombresSeleccionados,
-            "productoscantidades" to productosCantidadSeleccionados
+            "productoscantidades" to productosCantidadSeleccionados/*,
+            "productosprecios" to productosPrecioSeleccionados*/
         )
 
         db.collection("pedidos")
             .add(pedido as Map<String, Any>)
             .addOnSuccessListener { Toast.makeText(this, "DocumentSnapshot successfully written!",
                 Toast.LENGTH_SHORT).show()
-                super.onBackPressed()
+                intent.putExtra("pedido", pedido)
+                setResult(Activity.RESULT_OK,intent)
+                finish()
             }
             .addOnFailureListener {Toast.makeText(this, "Error writing document",
                 Toast.LENGTH_SHORT).show() }

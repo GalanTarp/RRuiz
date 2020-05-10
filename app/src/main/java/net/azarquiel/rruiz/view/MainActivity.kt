@@ -1,8 +1,10 @@
 package net.azarquiel.rruiz.view
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,6 +34,7 @@ import net.azarquiel.rruiz.model.Pedido
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
     companion object{
         const val TAG = "AppPrueba"
+        private const val REQUEST_ADD = 0
     }
 
     private lateinit var user: FirebaseUser
@@ -44,6 +47,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+
 
         user = FirebaseAuth.getInstance().currentUser!!
         auth = FirebaseAuth.getInstance()
@@ -64,6 +69,18 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_ADD) {
+                val intent = Intent(this, DetailPedido::class.java)
+                intent.putExtra("pedido", data!!.getSerializableExtra("pedido") as Pedido)
+                startActivity(intent)
+            }
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

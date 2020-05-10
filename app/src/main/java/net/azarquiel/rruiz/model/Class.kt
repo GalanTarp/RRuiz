@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-data class Canape(var nombre:String="", var foto:String="", var descripcion : String =""):Serializable
+data class Canape(var nombre:String="", var foto:String="", var descripcion : String ="", var precio: String=""):Serializable
 
 data class Image(var nombre: String="", var foto: String="", var path: String=""):Serializable
 

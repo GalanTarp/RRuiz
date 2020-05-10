@@ -57,14 +57,22 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:hint="Descripción"
+                android:hint="@string/descripci_n"
                 android:layout_marginBottom="16dp"/>
+
+            <EditText
+                android:id="@+id/newcanapeedprecio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/precio"
+                android:inputType="numberDecimal" />
 
             <Button
                 android:id="@+id/newcanapebtnaceptar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ACEPTAR" />
+                android:text="@string/aceptar" />
 
         </LinearLayout>
     </ScrollView>

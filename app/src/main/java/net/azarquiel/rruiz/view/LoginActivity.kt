@@ -45,8 +45,10 @@ class LoginActivity : AppCompatActivity() {
             // User is signed in
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("user", user)
+            intent.putExtra("muestropedido", false)
             startActivity(intent)
         }
+
         loginbtnsignin.setOnClickListener {
             signIn(loginetemail.text.toString(), loginetpass.text.toString())
         }
