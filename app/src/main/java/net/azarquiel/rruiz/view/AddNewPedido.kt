@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -202,14 +203,18 @@ class AddNewPedido : AppCompatActivity() {
 
         val lh = LinearLayout (this)
         val param : LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        param.weight = 1F
+        param.setMargins(0,8,0,8)
         lh.orientation = LinearLayout.HORIZONTAL
 
         val cantidad = TextView(this)
+        val param2 : LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        param2.setMargins(5,0,5,0)
+        cantidad.layoutParams=param2
         cantidad.text = n.toString()
 
         val btnmenos = Button(this)
         btnmenos.text = "-"
+        btnmenos.setBackgroundResource(R.drawable.buttonlogin2)
         btnmenos.setOnClickListener {
             for(prod in productosNombresSeleccionados.indices) {
                 if(nombre == productosNombresSeleccionados[prod]){
@@ -230,6 +235,7 @@ class AddNewPedido : AppCompatActivity() {
 
         val btnmas = Button(this)
         btnmas.text = "+"
+        btnmas.setBackgroundResource(R.drawable.buttonlogin2)
         btnmas.setOnClickListener {
             for(prod in productosNombresSeleccionados.indices) {
                 if(nombre == productosNombresSeleccionados[prod]){

@@ -1,6 +1,7 @@
 package net.azarquiel.rruiz.adapter
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,11 @@ class CustomAdapter(
 
             itemView.rowtvnombre.text = dataItem.nombre
 
+
+            val ad : AnimationDrawable = itemView.backgroudrowcanape.background as AnimationDrawable
+            ad.setEnterFadeDuration(500)
+            ad.setExitFadeDuration(1000)
+            ad.start()
             itemView.tag = dataItem
         }
 

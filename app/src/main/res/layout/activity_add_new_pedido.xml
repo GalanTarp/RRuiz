@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="Nombre:"
+                android:text="@string/nombredospuntos"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView9"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="Teléfono:"
+                android:text="@string/tel_fono"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,12 +84,13 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Nº tlf"
+                android:hint="@string/n_tlf"
                 android:inputType="phone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView10"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -120,7 +122,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="FECHA"
+                android:text="@string/fecha"
+                android:background="@drawable/buttonlogin"
+                android:textColor="@drawable/txt_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -138,7 +142,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="DOMICILIO"
+                android:text="@string/domicilio2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -154,19 +158,22 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Domicilio"
+                android:hint="@string/domicilio"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/newpedidocbdomicilio"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/newpedidobtnanadir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AÑADIR PRODUCTo" />
+            android:text="@string/a_adir_producto"
+            android:background="@drawable/buttonlogin2"
+            android:textColor="@drawable/txt_button"/>
 
             <LinearLayout
                 android:id="@+id/newpedidolinear"
@@ -193,7 +200,9 @@
             android:id="@+id/newpedidobtnaceptar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ACEPTAR" />
+            android:text="@string/aceptar"
+            android:background="@drawable/buttonlogin"
+            android:textColor="@drawable/txt_button"/>
     </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

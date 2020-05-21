@@ -1,59 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.CameraFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CameraFragment">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/cameraiv"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:contentDescription="@string/cameraimage"
+        android:src="@drawable/logorruiz" />
+
+    <Button
+        android:id="@+id/camerabtnup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/buttonlogin"
+        android:text="@string/subir_foto"
+        android:textColor="@drawable/txt_button" />
 
-        <ImageView
-            android:id="@+id/cameraiv"
-            android:layout_width="248dp"
-            android:layout_height="259dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/logorruiz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/cameraimage" />
+    <Button
+        android:id="@+id/camerabtnsel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/buttonlogin2"
+        android:text="@string/seleccionar_foto"
+        android:textColor="@drawable/txt_button" />
 
-        <Button
-            android:id="@+id/camerabtnup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/subir_foto"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.75"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cameraiv" />
-
-        <Button
-            android:id="@+id/camerabtnsel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/seleccionar_foto"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cameraiv" />
-
-        <Button
-            android:id="@+id/camerabtnrotate"
-            android:layout_width="87dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="48dp"
-            android:background="@android:drawable/ic_menu_rotate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/camerabtnsel" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+    <Button
+        android:id="@+id/camerabtnrotate"
+        android:layout_width="87dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="48dp"
+        android:background="@android:drawable/ic_menu_rotate" />
+</LinearLayout>

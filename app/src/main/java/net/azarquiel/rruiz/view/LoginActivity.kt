@@ -5,12 +5,14 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -31,10 +33,19 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var nombre : String
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val ad : AnimationDrawable = layoutlogin.background as AnimationDrawable
+        ad.setEnterFadeDuration(1000)
+        ad.setExitFadeDuration(1000)
+        ad.start()
+
+        progressBar= findViewById(R.id.progressBar)
+        progressBar.visibility = View.INVISIBLE
 
         auth = FirebaseAuth.getInstance()
 
@@ -74,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
         if (!validateForm()) {
             return
         }
-
+        progressBar.visibility = View.VISIBLE
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -98,10 +109,12 @@ class LoginActivity : AppCompatActivity() {
                                 Log.d(TAG, "Email sent.")
                             }
                         }
+                    progressBar.visibility = View.INVISIBLE
                     Toast.makeText(baseContext, "Se le ha enviado un correo de autentificación",
                         Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
+                    progressBar.visibility = View.INVISIBLE
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
@@ -115,6 +128,8 @@ class LoginActivity : AppCompatActivity() {
         if (!validateForm()) {
             return
         }
+
+        progressBar.visibility = View.VISIBLE
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -124,10 +139,12 @@ class LoginActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     if (user != null) {
                         if(user.isEmailVerified){
+                            progressBar.visibility = View.INVISIBLE
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("user", user)
                             startActivity(intent)
                         }else{
+                            progressBar.visibility = View.INVISIBLE
                             Toast.makeText(baseContext, "Debe verificar su cuenta, por medio del correo enviado",
                                 Toast.LENGTH_SHORT).show()
                         }
@@ -135,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
 
                 } else {
                     // If sign in fails, display a message to the user.
+                    progressBar.visibility = View.INVISIBLE
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
@@ -159,6 +177,7 @@ class LoginActivity : AppCompatActivity() {
         builder.setView(dialogLayout)
         builder.setPositiveButton("Aceptar") { _, _ ->
             nombre = editText.text.toString()
+            progressBar.visibility = View.VISIBLE
             Toast.makeText(applicationContext, "Tu nombre es " + editText.text.toString(), Toast.LENGTH_SHORT).show()
             createAccount(loginetemail.text.toString(), loginetpass.text.toString())}
         builder.show()
@@ -172,7 +191,7 @@ class LoginActivity : AppCompatActivity() {
 
         val email = loginetemail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            loginetemail.error = "Required."
+            loginetemail.error = "Requerido."
             valid = false
         } else {
             loginetemail.error = null
@@ -180,7 +199,7 @@ class LoginActivity : AppCompatActivity() {
 
         val password = loginetpass.text.toString()
         if (TextUtils.isEmpty(password)) {
-            loginetpass.error = "Required."
+            loginetpass.error = "Requerido."
             valid = false
         } else {
             loginetpass.error = null

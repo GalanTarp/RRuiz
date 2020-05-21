@@ -3,6 +3,7 @@ package net.azarquiel.rruiz.adapter
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.AnimationDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +57,12 @@ class AdapterGallery(
                 // Handle any errors
             }
             itemView.rowgallerytv.text = dataItem.name
+
+            val ad : AnimationDrawable = itemView.backgroundimage.background as AnimationDrawable
+            ad.setEnterFadeDuration(500)
+            ad.setExitFadeDuration(1000)
+            ad.start()
+
             itemView.tag = dataItem
         }
 

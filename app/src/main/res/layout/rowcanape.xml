@@ -7,15 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    card_view:cardCornerRadius="30dp"
+    card_view:cardCornerRadius="50dp"
     card_view:cardElevation="1dp"
     card_view:cardUseCompatPadding="false"
     card_view:contentPadding="10dp"
     android:onClick="onClickCanape">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/backgroudrowcanape"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradientlistrow">
 
         <TextView
             android:id="@+id/rowtvnombre"

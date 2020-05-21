@@ -30,16 +30,19 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:srcCompat="@drawable/logorruiz"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:contentDescription="@string/imagenaddcanape" />
 
             <Button
                 android:id="@+id/newcanapebtnfoto"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:text="AÑADIR FOTO"
                 android:layout_gravity="center"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/buttonlogin2"
+                android:text="@string/a_adir_foto"
+                android:textColor="@drawable/txt_button" />
 
             <EditText
                 android:id="@+id/newcanapeednombre"
@@ -47,8 +50,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Nombre"
-                android:layout_marginBottom="16dp"/>
+                android:hint="@string/nombre"
+                android:layout_marginBottom="16dp"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/newcanapeeddesc"
@@ -58,7 +62,8 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:hint="@string/descripci_n"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/newcanapeedprecio"
@@ -66,13 +71,16 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/precio"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:autofillHints="" />
 
             <Button
                 android:id="@+id/newcanapebtnaceptar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aceptar" />
+                android:text="@string/aceptar"
+                android:background="@drawable/buttonlogin"
+                android:textColor="@drawable/txt_button"/>
 
         </LinearLayout>
     </ScrollView>

@@ -37,7 +37,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="Canape">Canape</string>
     <string name="ImageStorage">ImageStorage</string>
-    <string name="nombre">Nombre</string>
     <string name="imagedetail">ImageDetail</string>
     <string name="cameraimage">CameraImage</string>
     <string name="subir_foto">SUBIR FOTO</string>
@@ -49,8 +48,17 @@
     <string name="registrarse">REGISTRARSE</string>
     <string name="contrase_a">Contraseña</string>
     <string name="cerrar_sesi_n">CERRAR SESIÓN</string>
-    <string name="domicilio">Domicilio</string>
     <string name="precio">Precio</string>
-    <string name="aceptar">ACEPTAR</string>
     <string name="title_activity_detail_pedido2">DetailPedido2</string>
+    <string name="a_adir_foto">AÑADIR FOTO</string>
+    <string name="nombre">Nombre</string>
+    <string name="nombredospuntos">Nombre:</string>
+    <string name="tel_fono">Teléfono:</string>
+    <string name="n_tlf">Nº tlf</string>
+    <string name="fecha">FECHA</string>
+    <string name="domicilio2">DOMICILIO</string>
+    <string name="domicilio">Domicilio</string>
+    <string name="a_adir_producto">AÑADIR PRODUCTO</string>
+    <string name="aceptar">ACEPTAR</string>
+    <string name="imagenaddcanape">ImagenAddCanape</string>
 </resources>
